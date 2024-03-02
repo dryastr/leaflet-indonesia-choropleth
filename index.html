@@ -16,6 +16,7 @@
         body {
             height: 100%;
             margin: 0;
+            background-color: #777;
         }
 
 
@@ -25,6 +26,7 @@
         #map {
             width: 100%;
             height: 25rem;
+            background-color: white;
         }
 
         .info {
@@ -65,42 +67,42 @@
 
     <script type="text/javascript">
         const colorMap = {
-            'Aceh': '#FFE4E1',
-            'SumateraUtara': '#87CEEB',
-            'SumateraBarat': '#98FB98',
-            'Riau': '#F0F8FF',
-            'Jambi': '#F5DEB3',
+            'Aceh': '#FFA07A',
+            'SumateraUtara': '#FFA07A',
+            'SumateraBarat': '#FFA07A',
+            'Riau': '#FFA07A',
+            'Jambi': '#FFA07A',
             'SumateraSelatan': '#FFA07A',
-            'Bengkulu': '#FFE4E1',
-            'Lampung': '#87CEEB',
-            'JakartaRaya': '#98FB98',
-            'JawaBarat': '#F0F8FF',
-            'JawaTengah': '#F5DEB3',
+            'Bengkulu': '#FFA07A',
+            'Lampung': '#FFA07A',
+            'JakartaRaya': '#FFA07A',
+            'JawaBarat': '#FFA07A',
+            'JawaTengah': '#FFA07A',
             'Yogyakarta': '#FFA07A',
-            'JawaTimur': '#FFE4E1',
-            'Banten': '#87CEEB',
-            'Bali': '#98FB98',
-            'NusaTenggaraBarat': '#F0F8FF',
-            'NusaTenggaraTimur': '#F5DEB3',
+            'JawaTimur': '#FFA07A',
+            'Banten': '#FFA07A',
+            'Bali': '#FFA07A',
+            'NusaTenggaraBarat': '#FFA07A',
+            'NusaTenggaraTimur': '#FFA07A',
             'KalimantanBarat': '#FFA07A',
-            'KalimantanTengah': '#FFE4E1',
-            'KalimantanSelatan': '#87CEEB',
-            'KalimantanTimur': '#98FB98',
-            'KalimantanUtara': '#F0F8FF',
-            'SulawesiUtara': '#F5DEB3',
+            'KalimantanTengah': '#FFA07A',
+            'KalimantanSelatan': '#FFA07A',
+            'KalimantanTimur': '#FFA07A',
+            'KalimantanUtara': '#FFA07A',
+            'SulawesiUtara': '#FFA07A',
             'SulawesiTengah': '#FFA07A',
-            'SulawesiSelatan': '#FFE4E1',
-            'SulawesiTenggara': '#87CEEB',
-            'Gorontalo': '#98FB98',
-            'Maluku': '#F0F8FF',
-            'MalukuUtara': '#F5DEB3',
+            'SulawesiSelatan': '#FFA07A',
+            'SulawesiTenggara': '#FFA07A',
+            'Gorontalo': '#FFA07A',
+            'Maluku': '#FFA07A',
+            'MalukuUtara': '#FFA07A',
             'PapuaBarat': '#FFA07A',
-            'Papua': '#FFE4E1'
+            'Papua': '#FFA07A'
         };
 
         function getColor(name) {
             // Cek apakah nilai NAME_1 ada dalam peta warna
-            return colorMap[name] || '#FFEDA0'; // Jika tidak ada, kembalikan warna default
+            return colorMap[name] || '#FFA07A'; // Jika tidak ada, kembalikan warna default
         }
 
         function style(feature) {
@@ -118,12 +120,33 @@
 
     <script type="text/javascript">
 
-        const map = L.map('map').setView([-0.7893, 113.9213], 5);
+        console.log(statesData);
 
-        const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        const minZoomLevel = 5;
+
+        const map = L.map('map', {
+            center: [-0.7893, 113.9213], 
+            zoom: minZoomLevel,
+            minZoom: minZoomLevel,
             maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            attributionControl: false,
+        });
+
+        const tiles = L.tileLayer('', {
+            attribution: ''
         }).addTo(map);
+
+        map.on('zoomend', function () {
+            if (map.getZoom() < minZoomLevel) {
+                map.setZoom(minZoomLevel);
+            }
+        });
+
+        // Tentukan batas maksimum hanya untuk wilayah Indonesia
+        const maxBounds = L.latLngBounds(L.latLng(-11.00828, 94.771965), L.latLng(6.27499, 141.019547));
+        map.setMaxBounds(maxBounds);
+        map.fitBounds(maxBounds);  // Menonaktifkan penggeseran peta (panning)
+
 
         // control that shows state info on hover
         const info = L.control();
@@ -179,7 +202,7 @@
             });
         }
 
-        map.attributionControl.addAttribution('Population data &copy; <a href="http://census.gov/">US Census Bureau</a>');
+        map.attributionControl.addAttribution('');
 
 
         const legend = L.control({ position: 'bottomright' });
